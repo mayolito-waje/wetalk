@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate": "node-pg-migrate -j ts -m ./src/migrations/ --envPath ./",
+    "migrate": "ts-node --project tsconfig.migrations.json node_modules/node-pg-migrate/bin/node-pg-migrate.js -j ts",
     "lint": "npx eslint .",
     "lint:fix": "npx eslint --fix ."
   },
@@ -24,7 +24,10 @@
     "eslint-config-airbnb-typescript": "^18.0.0",
     "globals": "^15.9.0",
     "gulp": "^5.0.0",
+    "gulp-shell": "^0.8.0",
+    "gulp-typescript": "6.0.0-alpha.1",
     "node-pg-migrate": "^7.6.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.6.2",
     "typescript-eslint": "^8.6.0"
   },
