@@ -33,6 +33,8 @@ export default [
   {
     rules: {
       'import/no-extraneous-dependencies': 0,
+      'no-console': 0,
+      'object-curly-newline': 0,
     },
   },
 ];

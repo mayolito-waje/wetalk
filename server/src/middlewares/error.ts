@@ -1,14 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { Request, Response, NextFunction } from 'express';
-import type { ExpressError } from '../types/expressTypes';
 
 const errorHandler = (
-  err: ExpressError,
+  err: Error,
   _req: Request,
   res: Response,
   _next: NextFunction,
 ): void => {
-  res.status(err.status ?? 500).json({
+  const statusCode = res.statusCode || 500;
+  console.log(err);
+
+  res.status(statusCode).json({
+    statusCode,
+    name: err.name,
     error: err.message,
   });
 };
