@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import { ColumnDefinitions, MigrationBuilder, PgType } from 'node-pg-migrate';
 
 export const shorthands: ColumnDefinitions | undefined = undefined;
@@ -5,10 +6,10 @@ export const shorthands: ColumnDefinitions | undefined = undefined;
 export async function up(pgm: MigrationBuilder): Promise<void> {
   pgm.createExtension('citext', { ifNotExists: true });
 
-  pgm.createDomain('domain_email', 'citext', {
-    // eslint-disable-next-line no-useless-escape
-    check: 'value ~ \'^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$\'',
-  });
+  pgm.sql(`
+    CREATE DOMAIN domain_email AS citext
+      CHECK ( value ~ '^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$' );
+  `);
 
   pgm.createTable('user', {
     id: {

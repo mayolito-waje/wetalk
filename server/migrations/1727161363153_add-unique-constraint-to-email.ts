@@ -9,7 +9,7 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
 }
 
 export async function down(pgm: MigrationBuilder): Promise<void> {
-  pgm.addConstraint('user', 'unique_email', {
+  pgm.dropConstraint('user', 'unique_email', {
     ifExists: true,
   });
 }
