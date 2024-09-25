@@ -3,6 +3,7 @@ import express from 'express';
 import 'express-async-errors';
 import cors from 'cors';
 import helmet from 'helmet';
+import morgan from 'morgan';
 
 import notFound from './middlewares/notFound.js';
 import errorHandler from './middlewares/error.js';
@@ -13,6 +14,8 @@ const app: Express = express();
 app.use(cors());
 app.use(helmet());
 app.use(express.json());
+
+app.use(morgan('tiny'));
 
 app.use('/api/auth', authRouter);
 
