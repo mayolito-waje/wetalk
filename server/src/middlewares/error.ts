@@ -7,7 +7,7 @@ const errorHandler = (
   res: Response,
   _next: NextFunction,
 ): void => {
-  const statusCode = res.statusCode || 500;
+  const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
   console.log(err);
 
   res.status(statusCode).json({
