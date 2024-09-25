@@ -31,12 +31,15 @@ const registerUser = async (req: Request, res: Response, next: NextFunction): Pr
     const token = jwt.sign({ userId: createdUser.id }, process.env.JWT_SECRET as string, { expiresIn: '1d' });
 
     res.status(201).json({
-      id: createdUser.id,
-      email: createdUser.email,
-      username: createdUser.username,
-      profilePicture: createdUser.profilePicture,
-      createdAt: createdUser.createdAt,
-      token,
+      status: 'registered new user (201)',
+      sessionToken: token,
+      userDetails: {
+        id: createdUser.id,
+        email: createdUser.email,
+        username: createdUser.username,
+        profilePicture: createdUser.profilePicture,
+        createdAt: createdUser.createdAt,
+      },
     });
   } catch (error) {
     res.status(400);
