@@ -24,6 +24,14 @@ const extractUser = async (req: Request, res: Response, next: NextFunction): Pro
       [userId],
     );
 
+    if (rows.length < 1) {
+      res.status(401).json({
+        status: 401,
+        message: 'user not found or deleted',
+      });
+      return;
+    }
+
     const user = rows[0];
     req.user = user;
 
