@@ -5,11 +5,14 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 
+import redisClient from './redis/client.js';
 import extractToken from './middlewares/extractToken.js';
 import notFound from './middlewares/notFound.js';
 import errorHandler from './middlewares/error.js';
 import authRouter from './routes/auth.js';
 import usersRouter from './routes/users.js';
+
+redisClient.connect();
 
 const app: Express = express();
 

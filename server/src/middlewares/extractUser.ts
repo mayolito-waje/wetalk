@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import type { Request, Response, NextFunction } from 'express';
 import pool from '../postgres/pool.js';
 import dbErrorMapper from '../postgres/postgresErrorMapper.js';
+import redisClient from '../redis/client.js';
 
 const extractUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -18,6 +19,17 @@ const extractUser = async (req: Request, res: Response, next: NextFunction): Pro
     }
 
     const { userId } = jwt.verify(req.token, process.env.JWT_SECRET as string) as JwtPayload;
+
+    const tokenIsBlacklisted = await redisClient.zScore(`session-tokens:blacklisted:${userId}`, req.token) !== null;
+    if (tokenIsBlacklisted) {
+      res.status(401).json({
+        status: 401,
+        message: 'the session token is already logged out (blacklisted)',
+      });
+      return;
+    }
+
+    await redisClient.zRemRangeByScore(`session-tokens:blacklisted:${userId}`, -Infinity, Date.now());
 
     const { rows } = await pool.query(
       'SELECT "id", "email", "username", "profilePicture", "createdAt", "isActive" FROM "user" WHERE "id" = $1',
