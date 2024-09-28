@@ -11,7 +11,7 @@ const registerUser = async (req: Request, res: Response, next: NextFunction): Pr
 
   const passwordRegex: RegExp = /^(?=.{8,}).*$/;
   if (!passwordRegex.test(password)) {
-    res.status(400);
+    res.status(422);
     next(new Error('Password should be at least 8 characters'));
     return;
   }
@@ -43,7 +43,6 @@ const registerUser = async (req: Request, res: Response, next: NextFunction): Pr
       },
     });
   } catch (error) {
-    res.status(400);
     next(dbErrorMapper(error as Error));
   }
 };
