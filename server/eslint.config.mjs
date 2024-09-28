@@ -3,6 +3,7 @@
 
 import globals from 'globals';
 import pluginJs from '@eslint/js';
+import jest, { rules } from 'eslint-plugin-jest';
 
 import { FlatCompat } from '@eslint/eslintrc';
 import path from 'path';
@@ -18,7 +19,12 @@ const compat = new FlatCompat({
 
 export default [
   { files: ['**/*.{js,mjs,cjs,ts}'] },
-  { languageOptions: { globals: globals.browser } },
+  { languageOptions: {
+    globals: {
+      ...globals.browser,
+      ...globals.jest,
+    },
+  } },
   pluginJs.configs.recommended,
   ...fixupConfigRules(compat.extends('airbnb-base')),
   ...compat.extends('airbnb-typescript/base'),
@@ -31,8 +37,21 @@ export default [
     },
   },
   {
+    files: ['src/__tests__/**/*'],
+    ...jest.configs['flat/recommended'],
+    rules: {
+      'jest/expect-expect': [
+        'error',
+        {
+          'expect': ['expect', 'api.**.expect'],
+        },
+      ],
+    },
+  },
+  {
     rules: {
       'import/no-extraneous-dependencies': 0,
+      'import/prefer-default-export': 0,
       'no-console': 0,
       'object-curly-newline': 0,
     },
