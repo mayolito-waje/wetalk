@@ -9,10 +9,10 @@ export default {
   testPathIgnorePatterns: ['__tests__/helpers/'],
   transform: {
     '^.+.tsx?$': [
-      'ts-jest', 
+      'ts-jest',
       {
         useESM: true,
-      }
+      },
     ],
   },
 };

@@ -3,7 +3,7 @@
 
 import globals from 'globals';
 import pluginJs from '@eslint/js';
-import jest, { rules } from 'eslint-plugin-jest';
+import jest from 'eslint-plugin-jest';
 
 import { FlatCompat } from '@eslint/eslintrc';
 import path from 'path';
@@ -43,7 +43,7 @@ export default [
       'jest/expect-expect': [
         'error',
         {
-          'expect': ['expect', 'api.**.expect'],
+          assertFunctionNames: ['expect', 'api.**.expect'],
         },
       ],
     },

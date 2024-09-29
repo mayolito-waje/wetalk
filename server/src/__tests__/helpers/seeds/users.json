@@ -1,0 +1,52 @@
+[
+  {
+    "email": "john_doe@example.com",
+    "username": "john_doe",
+    "password": "john_doe123"
+  },
+  {
+    "email": "jane_doe@example.com",
+    "username": "jane_doe",
+    "password": "jane_doe123"
+  },
+  {
+    "email": "pewdiepie@example.com",
+    "username": "pewdiepie",
+    "password": "pewdiepie123"
+  },
+  {
+    "email": "l_lawliet@example.com",
+    "username": "l_lawliet",
+    "password": "l_lawliet123"
+  },
+  {
+    "email": "mark_zuckerberg@example.com",
+    "username": "zuck",
+    "password": "mark_zuckerberg123"
+  },
+  {
+    "email": "bill_gates@example.com",
+    "username": "bill_gates",
+    "password": "bill_gates123"
+  },
+  {
+    "email": "elon_musk@example.com",
+    "username": "elon_musk",
+    "password": "elon_musk123"
+  },
+  {
+    "email": "jeff_bezos@example.com",
+    "username": "jeff_bezos",
+    "password": "jeff_bezos123"
+  },
+  {
+    "email": "henry_cavill@example.com",
+    "username": "geralt",
+    "password": "nerd_gamer123"
+  },
+  {
+    "email": "taylor_swift@example.com",
+    "username": "taylor",
+    "password": "travis_kelce_forever"
+  }
+]
