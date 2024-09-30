@@ -2,7 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import bcrypt from 'bcrypt';
 import pool from '../../postgres/pool.js';
-import type { UserRegistration } from '../../types/types.js';
+import type { UserLogin, UserRegistration } from '../../types/types.js';
+import api from './api.js';
+import redisClient from '../../redis/client.js';
 
 export const resetDb = async () => {
   try {
@@ -35,4 +37,28 @@ export const seedUsers = async () => {
   }));
 
   await Promise.all(populateUsers.map((data) => pool.query('INSERT INTO "user" ("email", "username", "passwordHash") VALUES ($1, $2, $3)', data)));
+};
+
+export const getTokenFromUser = async (user: UserLogin) => {
+  const res = await api
+    .post('/api/auth/login')
+    .send({
+      email: user.email,
+      password: user.password,
+    });
+
+  const { sessionToken } = res.body;
+  return sessionToken as string;
+};
+
+export const resetRedisDb = async () => {
+  try {
+    // deleting blacklisted session tokens
+    const { rows: users } = await pool.query('SELECT "id" FROM "user"');
+    const redisKeys = users.map(({ id }) => `session-tokens:blacklisted:${id}`);
+
+    await redisClient.unlink(redisKeys);
+  } catch (error: unknown) {
+    console.error(error as Error);
+  }
 };

@@ -3,7 +3,7 @@ import path from 'path';
 import api from './helpers/api.js';
 import pool from '../postgres/pool.js';
 import redisClient from '../redis/client.js';
-import { resetDb, seedUsers } from './helpers/dbSeeder.js';
+import { getTokenFromUser, resetDb, resetRedisDb, seedUsers } from './helpers/dbSeeder.js';
 import { UserRegistration } from '../types/types.js';
 
 const users: UserRegistration[] = JSON.parse(fs.readFileSync(path.resolve(__dirname, './helpers/seeds/users.json'), 'utf-8'));
@@ -13,7 +13,10 @@ beforeEach(async () => {
   await seedUsers();
 });
 
-afterEach(async () => resetDb());
+afterEach(async () => {
+  await resetRedisDb();
+  await resetDb();
+});
 
 afterAll(async () => {
   await pool.end();
@@ -114,5 +117,35 @@ describe('POST /api/auth/login', () => {
       .expect(401);
 
     expect(res.body.message).toBe('user not found');
+  });
+});
+
+describe('POST /api/auth/logout', () => {
+  it.only('successfully logout if sessionToken is provided', async () => {
+    const { email, password } = users[0];
+    const sessionToken = await getTokenFromUser({ email, password });
+
+    const res = await api
+      .post('/api/auth/logout')
+      .auth(sessionToken, { type: 'bearer' })
+      .expect(200);
+
+    expect(res.body.message).toBe('logout successful');
+  });
+
+  it.only('after logout, do not allow access to auth protected endpoints', async () => {
+    const { email, password } = users[0];
+    const sessionToken = await getTokenFromUser({ email, password });
+
+    await api
+      .post('/api/auth/logout')
+      .auth(sessionToken, { type: 'bearer' });
+
+    const res = await api
+      .get('/api/users/@me')
+      .auth(sessionToken, { type: 'bearer' })
+      .expect(401);
+
+    expect(res.body.message).toBe('the session token is already logged out (blacklisted)');
   });
 });
