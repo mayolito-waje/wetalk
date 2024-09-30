@@ -1,4 +1,9 @@
 import api from './helpers/api.js';
+import redisClient from '../redis/client.js';
+
+afterAll(async () => {
+  await redisClient.quit();
+});
 
 describe('extracting session token', () => {
   it('prevent accessing auth protected endpoints without session token', async () => {
