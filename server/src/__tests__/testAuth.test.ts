@@ -1,12 +1,8 @@
-import fs from 'fs';
-import path from 'path';
 import api from './helpers/api.js';
 import pool from '../postgres/pool.js';
 import redisClient from '../redis/client.js';
-import { getTokenFromUser, resetDb, resetRedisDb, seedUsers } from './helpers/dbSeeder.js';
+import { users, getTokenFromUser, resetDb, resetRedisDb, seedUsers } from './helpers/dbSeeder.js';
 import { UserRegistration } from '../types/types.js';
-
-const users: UserRegistration[] = JSON.parse(fs.readFileSync(path.resolve(__dirname, './helpers/seeds/users.json'), 'utf-8'));
 
 beforeEach(async () => {
   await resetDb();
@@ -121,7 +117,7 @@ describe('POST /api/auth/login', () => {
 });
 
 describe('POST /api/auth/logout', () => {
-  it.only('successfully logout if sessionToken is provided', async () => {
+  it('successfully logout if sessionToken is provided', async () => {
     const { email, password } = users[0];
     const sessionToken = await getTokenFromUser({ email, password });
 
@@ -133,7 +129,7 @@ describe('POST /api/auth/logout', () => {
     expect(res.body.message).toBe('logout successful');
   });
 
-  it.only('after logout, do not allow access to auth protected endpoints', async () => {
+  it('after logout, do not allow access to auth protected endpoints', async () => {
     const { email, password } = users[0];
     const sessionToken = await getTokenFromUser({ email, password });
 

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { Request, Response, NextFunction } from 'express';
-import ValidEmailError from '../postgres/errors/ValidEmailError';
-import NoDuplicateEmailError from '../postgres/errors/NoDuplicateEmailError';
+import ValidEmailError from '../postgres/errors/ValidEmailError.js';
+import NoDuplicateEmailError from '../postgres/errors/NoDuplicateEmailError.js';
 
 const errorHandler = (
   err: Error,

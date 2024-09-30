@@ -6,6 +6,8 @@ import type { UserLogin, UserRegistration } from '../../types/types.js';
 import api from './api.js';
 import redisClient from '../../redis/client.js';
 
+export const users: UserRegistration[] = JSON.parse(fs.readFileSync(path.resolve(__dirname, './seeds/users.json'), 'utf8'));
+
 export const resetDb = async () => {
   try {
     await pool.query('BEGIN');
@@ -25,8 +27,6 @@ export const resetDb = async () => {
 };
 
 export const seedUsers = async () => {
-  const users: UserRegistration[] = JSON.parse(fs.readFileSync(path.resolve(__dirname, './seeds/users.json'), 'utf8'));
-
   await pool.query('DELETE FROM "user"');
 
   const populateUsers = await Promise.all(users.map(async ({ email, username, password }) => {
@@ -54,8 +54,8 @@ export const getTokenFromUser = async (user: UserLogin) => {
 export const resetRedisDb = async () => {
   try {
     // deleting blacklisted session tokens
-    const { rows: users } = await pool.query('SELECT "id" FROM "user"');
-    const redisKeys = users.map(({ id }) => `session-tokens:blacklisted:${id}`);
+    const { rows } = await pool.query('SELECT "id" FROM "user"');
+    const redisKeys = rows.map(({ id }) => `session-tokens:blacklisted:${id}`);
 
     await redisClient.unlink(redisKeys);
   } catch (error: unknown) {
