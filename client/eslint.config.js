@@ -3,7 +3,7 @@ import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
-import stylisticTs from '@stylistic/eslint-plugin-ts';
+import stylistic from '@stylistic/eslint-plugin';
 import parserTs from '@typescript-eslint/parser';
 
 export default tseslint.config(
@@ -29,13 +29,14 @@ export default tseslint.config(
   },
   {
     plugins: {
-      '@stylistic/ts': stylisticTs,
+      '@stylistic': stylistic,
     },
     languageOptions: {
       parser: parserTs,
     },
     rules: {
-      '@stylistic/ts/semi': 'error'
+      '@stylistic/semi': 'error',
+      '@stylistic/eol-last': 'error',
     }
   }
 );
