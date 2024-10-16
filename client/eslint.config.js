@@ -37,6 +37,7 @@ export default tseslint.config(
     rules: {
       '@stylistic/semi': 'error',
       '@stylistic/eol-last': 'error',
-    }
-  }
+      'comma-dangle': ['error', 'always-multiline'],
+    },
+  },
 );

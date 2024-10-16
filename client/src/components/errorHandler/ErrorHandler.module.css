@@ -1,0 +1,22 @@
+.error {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.error > * {
+  margin: 0.5em 0;
+}
+
+.errorHeader {
+  display: grid;
+  grid-auto-flow: column;
+  place-items: center;
+  gap: 0.5em;
+}
+
+.errorHeader > * {
+  margin: 0;
+}
