@@ -1,0 +1,14 @@
+.styledButton {
+  font-family: var(--main-font);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  text-transform: uppercase;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: opacity 0.5s;
+  border: none;
+}
+
+.styledButton:hover {
+  opacity: 0.8;
+}

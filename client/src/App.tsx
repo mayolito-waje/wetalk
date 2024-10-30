@@ -1,9 +1,12 @@
+import StyledButton from './components/styledButton/StyledButton';
 import styles from './App.module.css';
 
 const App = () => {
   return (
     <div className={styles.app}>
-      <div className={styles.logo}>wetalk</div>
+      <div className={styles.logoContainer}>
+        <div className={styles.logo}><div className={styles.logoText}>wetalk</div></div>
+      </div>
       <div className={styles.landingContainer}>
         <div className={styles.loginSection}>
           <div className={styles.message}>
@@ -17,9 +20,9 @@ const App = () => {
             <div className={styles.password}>
               <input type="password" name="password" id="landing_password" placeholder='Password' />
             </div>
-            <button className={styles.loginButton}>Log in</button>
-            <input type="checkbox" name="keep_signed_in" id="landing_keep_signed_in" />
-            <label htmlFor="landing_keep_signed_in">Keep me signed in</label>
+            <StyledButton text="login" backgroundColor="var(--auth-button-color)" />
+            {/* <input type="checkbox" name="keep_signed_in" id="landing_keep_signed_in" />
+            <label htmlFor="landing_keep_signed_in">Keep me signed in</label> */}
           </form>
         </div>
         <div className={styles.landingMainPicture}>
