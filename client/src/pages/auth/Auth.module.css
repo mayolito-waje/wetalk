@@ -1,0 +1,62 @@
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.outlet {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+}
+
+.logoContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoContainer h2 {
+  font-size: 1.5rem;
+  font-style: italic;
+}
+
+.logo {
+  content: "";
+  background-color: var(--accent-color);
+  height: 5em;
+  width: 20em;
+
+  mask-image: url(/wetalk.svg);
+  mask-position: center;
+  mask-size: cover;
+  -webkit-mask-image: url(/wetalk.svg);
+  -webkit-mask-position: center;
+  -webkit-mask-size: cover;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8em;
+}
+
+.inputWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.input {
+  width: 80%;
+  border: 1px solid grey;
+  border-radius: 8px;
+  padding: 0.5em;
+}

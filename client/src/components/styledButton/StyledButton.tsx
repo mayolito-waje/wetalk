@@ -13,8 +13,9 @@ const StyledButton = (props: StyledButtonProps) => {
       style={{
         fontSize: props.fontSize ? props.fontSize + 'rem' : '1rem',
         backgroundColor: props.backgroundColor ? props.backgroundColor : 'var(--accent-color)',
+        
       }}
-      className={styles.styledButton}
+      className={`${styles.styledButton} ${props.spinner ? styles.enabledSpinner : ''}`}
     >
       {props.text}
     </button>

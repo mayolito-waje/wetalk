@@ -12,3 +12,33 @@
 .styledButton:hover {
   opacity: 0.8;
 }
+
+.styledButton.enabledSpinner {
+  color: transparent;
+  position: relative;
+}
+
+.enabledSpinner::before {
+  position: absolute;
+  left: 0; 
+  right: 0; 
+  margin-inline: auto; 
+  content: "";
+  width: 1em;
+  height: 1em;
+  border: 0.15em solid #FFF;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+} 
