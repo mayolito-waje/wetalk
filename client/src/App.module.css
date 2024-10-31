@@ -11,39 +11,20 @@
   background-color: var(--accent-color);
   width: 100%;
   padding: 15px;
+  box-shadow: 2px 2px 8px #1f1f1f;
 }
 
 .logo {
-  width: fit-content;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 25px;
-}
-
-.logoText {
-  font-family: var(--title-font);
-  text-transform: uppercase;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: white;
-  margin-top: 5px;
-  height: fit-content;
-  width: fit-content;
-}
-
-.logo::before {
-  display: inline-block;
-  content: "";
+  margin-left: 25px;
   height: 3em;
-  width: 3em;
-  background-color: white;
-  margin-right: 5px;
+  width: 12em;
+  background-color: #fff;
+  content: "";
 
-  mask-image: url(/speech-bubble.svg);
+  mask-image: url(/wetalk.svg);
   mask-size: cover;
   mask-position: center;
-  -webkit-mask-image: url(/speech-bubble.svg);
+  -webkit-mask-image: url(/wetalk.svg);
   -webkit-mask-size: cover;
   -webkit-mask-position: center;
 }
@@ -103,7 +84,7 @@
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 900px) {
   .landingContainer {
     justify-content: center;
     width: 60%;
@@ -122,6 +103,11 @@
     & > img {
       max-width: 100%;
       max-height: 100%;
+      box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+                  rgba(0, 0, 0, 0.12) 0px -12px 30px, 
+                  rgba(0, 0, 0, 0.12) 0px 4px 6px, 
+                  rgba(0, 0, 0, 0.17) 0px 12px 13px, 
+                  rgba(0, 0, 0, 0.09) 0px -3px 5px;
     }
   }
 }

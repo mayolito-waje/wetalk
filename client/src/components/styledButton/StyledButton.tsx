@@ -4,6 +4,7 @@ interface StyledButtonProps {
   text: string;
   fontSize?: number;
   backgroundColor?: string;
+  spinner?: boolean;
 };
 
 const StyledButton = (props: StyledButtonProps) => {

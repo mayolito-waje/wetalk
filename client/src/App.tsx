@@ -5,7 +5,7 @@ const App = () => {
   return (
     <div className={styles.app}>
       <div className={styles.logoContainer}>
-        <div className={styles.logo}><div className={styles.logoText}>wetalk</div></div>
+        <div className={styles.logo}></div>
       </div>
       <div className={styles.landingContainer}>
         <div className={styles.loginSection}>
