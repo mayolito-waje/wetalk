@@ -5,12 +5,12 @@ afterAll(async () => {
   await redisClient.quit();
 });
 
-describe('extracting session token', () => {
-  it('prevent accessing auth protected endpoints without session token', async () => {
+describe('extracting access token', () => {
+  it('prevent accessing auth protected endpoints without access token', async () => {
     const res = await api
       .get('/api/users/@me')
       .expect(401);
 
-    expect(res.body.message).toBe('session token is missing');
+    expect(res.body.message).toBe('access token is missing');
   });
 });

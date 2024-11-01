@@ -86,7 +86,7 @@ describe('POST /api/auth/login', () => {
       .expect(200);
 
     expect(res.body.message).toBe('login successful');
-    expect(res.body.sessionToken).toBeDefined();
+    expect(res.body.accessToken).toBeDefined();
   });
 
   it('does not authorize login if wrong password', async () => {
@@ -117,13 +117,14 @@ describe('POST /api/auth/login', () => {
 });
 
 describe('POST /api/auth/logout', () => {
-  it('successfully logout if sessionToken is provided', async () => {
+  it('successfully logout if accessToken is provided', async () => {
     const { email, password } = users[0];
-    const sessionToken = await getTokenFromUser({ email, password });
+    const { cookies, accessToken } = await getTokenFromUser({ email, password });
 
     const res = await api
       .post('/api/auth/logout')
-      .auth(sessionToken, { type: 'bearer' })
+      .set('Cookie', cookies)
+      .auth(accessToken, { type: 'bearer' })
       .expect(200);
 
     expect(res.body.message).toBe('logout successful');
@@ -131,15 +132,17 @@ describe('POST /api/auth/logout', () => {
 
   it('after logout, do not allow access to auth protected endpoints', async () => {
     const { email, password } = users[0];
-    const sessionToken = await getTokenFromUser({ email, password });
+    const { cookies, accessToken } = await getTokenFromUser({ email, password });
 
     await api
       .post('/api/auth/logout')
-      .auth(sessionToken, { type: 'bearer' });
+      .set('Cookie', cookies)
+      .auth(accessToken, { type: 'bearer' });
 
     const res = await api
       .get('/api/users/@me')
-      .auth(sessionToken, { type: 'bearer' })
+      .set('Cookie', cookies)
+      .auth(accessToken, { type: 'bearer' })
       .expect(401);
 
     expect(res.body.message).toBe('the session token is already logged out (blacklisted)');

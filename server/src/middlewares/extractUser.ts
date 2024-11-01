@@ -9,18 +9,39 @@ const extractUser = async (req: Request, res: Response, next: NextFunction): Pro
     if (!req.token) {
       res.status(401).json({
         status: 401,
-        message: 'session token is missing',
+        message: 'access token is missing',
       });
       return;
     }
+
+    if (!req.cookies?.jwt) {
+      res.status(401).json({
+        status: 401,
+        message: 'refresh token is missing',
+      });
+      return;
+    }
+
+    const refreshToken = req.cookies.jwt;
 
     interface JwtPayload {
       userId: string;
     }
 
-    const { userId } = jwt.verify(req.token, process.env.JWT_SECRET as string) as JwtPayload;
+    const { userId } = jwt.verify(req.token, process.env.JWT_ACCESS_SECRET as string) as JwtPayload;
+    const { userId: refreshTokenUserId } = jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_SECRET as string,
+    ) as JwtPayload;
 
-    const tokenIsBlacklisted = await redisClient.zScore(`session-tokens:blacklisted:${userId}`, req.token) !== null;
+    if (userId !== refreshTokenUserId) {
+      res.status(401).json({
+        status: 401,
+        message: 'the access token and refresh token does not belong to same user',
+      });
+    }
+
+    const tokenIsBlacklisted = await redisClient.zScore(`session-tokens:blacklisted:${userId}`, refreshToken) !== null;
     if (tokenIsBlacklisted) {
       res.status(401).json({
         status: 401,

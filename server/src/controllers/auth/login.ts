@@ -31,12 +31,20 @@ const loginUser = async (req: Request, res: Response, next: NextFunction): Promi
       return;
     }
 
-    const token = jwt.sign({ userId: userToLogin.id }, process.env.JWT_SECRET as string, { expiresIn: '1d' });
+    const accessToken = jwt.sign({ userId: userToLogin.id }, process.env.JWT_ACCESS_SECRET as string, { expiresIn: '10m' });
+    const refreshToken = jwt.sign({ userId: userToLogin.id }, process.env.JWT_REFRESH_SECRET as string, { expiresIn: '1d' });
+
+    res.cookie('jwt', refreshToken, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
 
     res.status(200).json({
       status: 200,
       message: 'login successful',
-      sessionToken: token,
+      accessToken,
     });
   } catch (error: unknown) {
     next(dbErrorMapper(error as Error));

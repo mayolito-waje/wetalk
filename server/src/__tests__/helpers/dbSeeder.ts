@@ -47,8 +47,10 @@ export const getTokenFromUser = async (user: UserLogin) => {
       password: user.password,
     });
 
-  const { sessionToken } = res.body;
-  return sessionToken as string;
+  const cookies = res.headers['set-cookie'];
+
+  const { accessToken } = res.body;
+  return { cookies, accessToken };
 };
 
 export const resetRedisDb = async () => {

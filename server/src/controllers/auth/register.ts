@@ -28,12 +28,21 @@ const registerUser = async (req: Request, res: Response, next: NextFunction): Pr
     );
 
     const createdUser = query.rows[0];
-    const token = jwt.sign({ userId: createdUser.id }, process.env.JWT_SECRET as string, { expiresIn: '1d' });
+
+    const accessToken = jwt.sign({ userId: createdUser.id }, process.env.JWT_ACCESS_SECRET as string, { expiresIn: '10m' });
+    const refreshToken = jwt.sign({ userId: createdUser.id }, process.env.JWT_REFRESH_SECRET as string, { expiresIn: '1d' });
+
+    res.cookie('jwt', refreshToken, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
 
     res.status(201).json({
       status: 201,
       message: 'registered new user',
-      sessionToken: token,
+      accessToken,
       userDetails: {
         id: createdUser.id,
         email: createdUser.email,

@@ -2,8 +2,15 @@ import type { Request, Response, NextFunction } from 'express';
 import redisClient from '../../redis/client.js';
 
 const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
-  const sessionToken: string = req.token;
+  if (!req.cookies?.jwt) {
+    // refresh token cookies probably expired, so log out is already successful.
+    res.json({
+      status: 200,
+      message: 'logout successful',
+    });
+  }
 
+  const sessionToken: string = req.cookies.jwt;
   const userId: string = req.user.id;
 
   try {

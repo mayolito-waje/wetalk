@@ -21,11 +21,12 @@ afterAll(async () => {
 describe('GET /api/users/@me', () => {
   it('get logged in user', async () => {
     const { email, username, password } = users[0];
-    const sessionToken = await getTokenFromUser({ email, password });
+    const { cookies, accessToken } = await getTokenFromUser({ email, password });
 
     const res = await api
       .get('/api/users/@me')
-      .auth(sessionToken, { type: 'bearer' })
+      .set('Cookie', cookies)
+      .auth(accessToken, { type: 'bearer' })
       .expect(200);
 
     expect(res.body.email).toBe(email);
