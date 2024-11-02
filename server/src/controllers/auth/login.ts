@@ -32,19 +32,13 @@ const loginUser = async (req: Request, res: Response, next: NextFunction): Promi
     }
 
     const accessToken = jwt.sign({ userId: userToLogin.id }, process.env.JWT_ACCESS_SECRET as string, { expiresIn: '10m' });
-    const refreshToken = jwt.sign({ userId: userToLogin.id }, process.env.JWT_REFRESH_SECRET as string, { expiresIn: '1d' });
+    const refreshToken = jwt.sign({ userId: userToLogin.id }, process.env.JWT_REFRESH_SECRET as string, { expiresIn: '7d' });
 
     res.cookie('jwt', refreshToken, {
       httpOnly: true,
       sameSite: 'none',
       secure: true,
       maxAge: 24 * 60 * 60 * 1000,
-    });
-
-    res.cookie('lastLoggedUser', userToLogin.id, {
-      httpOnly: true,
-      sameSite: 'none',
-      secure: true,
     });
 
     res.status(200).json({

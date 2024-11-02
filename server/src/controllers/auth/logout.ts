@@ -14,11 +14,10 @@ const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
   const userId: string = req.user.id;
 
   try {
-    await redisClient.zAdd(`session-tokens:blacklisted:${userId}`, [{ value: sessionToken, score: Date.now() + (60 * 60 * 24 * 1000) }]);
+    await redisClient.zAdd(`session-tokens:blacklisted:${userId}`, [{ value: sessionToken, score: Date.now() + (60 * 60 * 24 * 7 * 1000) }]);
     await redisClient.zRemRangeByScore(`session-tokens:blacklisted:${userId}`, -Infinity, Date.now());
 
     res.clearCookie('jwt');
-    res.clearCookie('lastLoggedUser');
 
     res.json({
       status: 200,

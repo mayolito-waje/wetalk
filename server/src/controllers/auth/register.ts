@@ -30,19 +30,13 @@ const registerUser = async (req: Request, res: Response, next: NextFunction): Pr
     const createdUser = query.rows[0];
 
     const accessToken = jwt.sign({ userId: createdUser.id }, process.env.JWT_ACCESS_SECRET as string, { expiresIn: '10m' });
-    const refreshToken = jwt.sign({ userId: createdUser.id }, process.env.JWT_REFRESH_SECRET as string, { expiresIn: '1d' });
+    const refreshToken = jwt.sign({ userId: createdUser.id }, process.env.JWT_REFRESH_SECRET as string, { expiresIn: '7d' });
 
     res.cookie('jwt', refreshToken, {
       httpOnly: true,
       sameSite: 'none',
       secure: true,
       maxAge: 24 * 60 * 60 * 1000,
-    });
-
-    res.cookie('lastLoggedUser', createdUser.id, {
-      httpOnly: true,
-      sameSite: 'none',
-      secure: true,
     });
 
     res.status(201).json({
