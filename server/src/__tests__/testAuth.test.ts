@@ -139,12 +139,19 @@ describe('POST /api/auth/logout', () => {
       .set('Cookie', cookies)
       .auth(accessToken, { type: 'bearer' });
 
-    const res = await api
+    let res = await api
       .get('/api/users/@me')
       .set('Cookie', cookies)
       .auth(accessToken, { type: 'bearer' })
       .expect(401);
 
     expect(res.body.message).toBe('the session token is already logged out (blacklisted)');
+
+    res = await api
+      .get('/api/users/@me')
+      .auth(accessToken, { type: 'bearer' })
+      .expect(401);
+
+    expect(res.body.message).toBe('refresh token is missing');
   });
 });

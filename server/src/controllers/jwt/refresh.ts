@@ -6,12 +6,16 @@ const refreshAccessToken = (req: Request, res: Response): void => {
     const refreshToken = req.cookies.jwt;
 
     try {
-      const decoded = jwt.verify(
+      interface JwtPayload {
+        userId: string;
+      }
+
+      const { userId } = jwt.verify(
         refreshToken,
         process.env.JWT_REFRESH_SECRET as string,
-      );
+      ) as JwtPayload;
 
-      const accessToken = jwt.sign(decoded, process.env.JWT_ACCESS_SECRET as string);
+      const accessToken = jwt.sign({ userId }, process.env.JWT_ACCESS_SECRET as string, { expiresIn: '10m' });
 
       res.json({ accessToken });
     } catch (error: unknown) {
