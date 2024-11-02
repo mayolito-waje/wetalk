@@ -39,6 +39,12 @@ const registerUser = async (req: Request, res: Response, next: NextFunction): Pr
       maxAge: 24 * 60 * 60 * 1000,
     });
 
+    res.cookie('lastLoggedUser', createdUser.id, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+    });
+
     res.status(201).json({
       status: 201,
       message: 'registered new user',

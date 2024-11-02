@@ -68,6 +68,12 @@ const extractUser = async (req: Request, res: Response, next: NextFunction): Pro
     const user = rows[0];
     req.user = user;
 
+    res.cookie('lastLoggedUser', req.user.id, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+    });
+
     next();
   } catch (error: unknown) {
     res.status(401);

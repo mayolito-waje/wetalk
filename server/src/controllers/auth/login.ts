@@ -41,6 +41,12 @@ const loginUser = async (req: Request, res: Response, next: NextFunction): Promi
       maxAge: 24 * 60 * 60 * 1000,
     });
 
+    res.cookie('lastLoggedUser', userToLogin.id, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+    });
+
     res.status(200).json({
       status: 200,
       message: 'login successful',

@@ -18,6 +18,7 @@ const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
     await redisClient.zRemRangeByScore(`session-tokens:blacklisted:${userId}`, -Infinity, Date.now());
 
     res.clearCookie('jwt');
+    res.clearCookie('lastLoggedUser');
 
     res.json({
       status: 200,
