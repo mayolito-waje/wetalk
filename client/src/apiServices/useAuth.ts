@@ -34,10 +34,14 @@ const useAuth = () => {
 
       const { accessToken } = data;
       setAccessToken(accessToken as string);
+
+      return true;
     } catch(error: unknown) {
       if (error instanceof Error) {
         console.error(error);
       }
+
+      return false;
     }
   };
 

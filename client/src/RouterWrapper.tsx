@@ -7,7 +7,7 @@ import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Chat from './pages/chat/Chat';
 
-import { appAction, appLoader } from './app/App.loaders';
+import { appAction } from './app/App.loaders';
 
 const RouterWrapper = () => {
   const { login } = useAuth();
@@ -17,7 +17,6 @@ const RouterWrapper = () => {
       path: '/',
       element: <App />,
       errorElement: <ErrorHandler />,
-      loader: appLoader,
       action: appAction({ login }),
       children: [
         {

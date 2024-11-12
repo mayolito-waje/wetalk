@@ -1,6 +1,10 @@
+import UserProvider from '../../contextProviders/userProvider/UserProvider';
+
 const Chat = () => {
   return (
-    <div>Chat</div>
+    <UserProvider>
+      <div>Chat</div>
+    </UserProvider>
   );
 };
 

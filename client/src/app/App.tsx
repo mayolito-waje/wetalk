@@ -1,21 +1,23 @@
-import { useEffect } from 'react';
-import { Outlet, useLoaderData, useNavigate } from 'react-router-dom';
+import { Outlet,  useNavigate } from 'react-router-dom';
 import useAccessToken from '../contextProviders/accessTokenProvider/useAccessToken';
+import useAuth from '../apiServices/useAuth';
 import LandingPage from '../pages/landingPage/LandingPage';
-import { AppLoaderData } from './App.loaders';
 
 const App = () => {
-  const loader: AppLoaderData = useLoaderData() as AppLoaderData;
-  const { accessToken, setAccessToken } = useAccessToken();
+  const { accessToken } = useAccessToken();
+  const { refreshAccessToken } = useAuth();
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (accessToken === null && loader.accessToken !== null) {
-      setAccessToken(loader.accessToken);
-      navigate('/chat');
+  (async () => {
+    if (accessToken === null) {
+      const refreshSuccessful = await refreshAccessToken();
+        
+      if (refreshSuccessful) {
+        navigate('/chat');
+      }
     }
-  });
+  })();
 
   return (
     <>
