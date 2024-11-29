@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet,  useNavigate } from 'react-router-dom';
 import useAccessToken from '../contextProviders/accessTokenProvider/useAccessToken';
 import useAuth from '../apiServices/useAuth';
@@ -13,28 +13,35 @@ const App = () => {
 
   const navigate = useNavigate();
 
+  const [renderPage, setRenderPage] = useState(false);
+
   useEffect(() => {
+    console.log("test 2");
     (async () => {
       if (accessToken === null) {
         const refreshSuccessful = await refreshAccessToken();
           
         if (refreshSuccessful) {
-          notificationDispatch({ type: 'success', message: 'Login Successfull' });
+          notificationDispatch({ type: 'success', message: 'Logged in' });
           navigate('/chat');
         }
+
+        setRenderPage(true);
       }
     })();
   });
 
   return (
-    <div>
-      {
-        accessToken === null
-          ? <LandingPage />
-          : <Outlet />
-      }
-      <AlertNotification />
-    </div>
+    renderPage && (
+      <div>
+        {
+          accessToken === null
+            ? <LandingPage />
+            : <Outlet />
+        }
+        <AlertNotification />
+      </div>
+    )
   );
 };
 
