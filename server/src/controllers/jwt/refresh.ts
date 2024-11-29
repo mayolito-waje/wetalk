@@ -25,14 +25,14 @@ const refreshAccessToken = (req: Request, res: Response, next: NextFunction): vo
       } else {
         res.status(406).json({
           status: 406,
-          message: 'Unauthorized',
+          error: 'Unauthorized',
         });
       }
     }
   } else {
     res.status(406).json({
       status: 406,
-      message: 'Unauthorized',
+      error: 'Unauthorized',
     });
   }
 };

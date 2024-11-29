@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import Footer from '../../components/footer/Footer';
 import styles from './Auth.module.css';
+import AlertNotification from '../../components/alertNotification/AlertNotification';
 
 const Auth = () => {
   return (
@@ -13,6 +14,7 @@ const Auth = () => {
         <Outlet />
       </div>
       <Footer />
+      <AlertNotification />
     </div>
   );
 };

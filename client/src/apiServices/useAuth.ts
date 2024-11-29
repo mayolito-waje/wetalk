@@ -1,5 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import useAccessToken from '../contextProviders/accessTokenProvider/useAccessToken';
+import useAlertNotification from '../contextProviders/alertNotificationProvider/useAlertNotification';
 
 export interface UserLogin {
   email: string;
@@ -7,6 +8,7 @@ export interface UserLogin {
 };
 
 const useAuth = () => {
+  const { dispatch: notificationDispatch } = useAlertNotification();
   const { setAccessToken } = useAccessToken();
 
   const login = async (credentials: UserLogin) => {
@@ -19,8 +21,9 @@ const useAuth = () => {
 
       return true;
     } catch(error: unknown) {
-      if (error instanceof Error) {
-        console.error(error);
+      console.error(error as Error);
+      if (error instanceof AxiosError) {
+        notificationDispatch({ type: 'error', message: error.response?.data.error });
       }
 
       return false;
@@ -37,8 +40,9 @@ const useAuth = () => {
 
       return true;
     } catch(error: unknown) {
-      if (error instanceof Error) {
-        console.error(error);
+      console.error(error as Error);
+      if (error instanceof AxiosError) {
+        notificationDispatch({ type: 'error', message: error.response?.data.error });
       }
 
       return false;

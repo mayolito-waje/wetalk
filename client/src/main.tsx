@@ -3,12 +3,15 @@ import { createRoot } from 'react-dom/client';
 import 'normalize.css';
 import './index.css';
 import AccessTokenProvider from './contextProviders/accessTokenProvider/AccessTokenProvider';
+import AlertNotificationProvider from './contextProviders/alertNotificationProvider/AlertNotificationProvider';
 import RouterWrapper from './RouterWrapper';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AccessTokenProvider>
-      <RouterWrapper />
+      <AlertNotificationProvider>
+        <RouterWrapper />
+      </AlertNotificationProvider>
     </AccessTokenProvider>
   </StrictMode>,
 );
