@@ -15,7 +15,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction): Promi
     if (rows.length < 1) {
       res.status(401).json({
         status: 401,
-        message: 'user not found',
+        error: 'user not found',
       });
       return;
     }
@@ -26,7 +26,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction): Promi
     if (!isPasswordTheSame) {
       res.status(401).json({
         status: 401,
-        message: 'password not match',
+        error: 'password not match',
       });
       return;
     }

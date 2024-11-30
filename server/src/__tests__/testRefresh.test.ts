@@ -36,6 +36,6 @@ describe('GET /api/refresh', () => {
       .get('/api/refresh')
       .expect(406);
 
-    expect(res.body.message).toBe('Unauthorized');
+    expect(res.body.error).toBe('Unauthorized');
   });
 });

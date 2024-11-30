@@ -100,7 +100,7 @@ describe('POST /api/auth/login', () => {
       })
       .expect(401);
 
-    expect(res.body.message).toBe('password not match');
+    expect(res.body.error).toBe('password not match');
   });
 
   it('does not login if user is not in database', async () => {
@@ -112,7 +112,7 @@ describe('POST /api/auth/login', () => {
       })
       .expect(401);
 
-    expect(res.body.message).toBe('user not found');
+    expect(res.body.error).toBe('user not found');
   });
 });
 
@@ -145,13 +145,13 @@ describe('POST /api/auth/logout', () => {
       .auth(accessToken, { type: 'bearer' })
       .expect(401);
 
-    expect(res.body.message).toBe('the session token is already logged out (blacklisted)');
+    expect(res.body.error).toBe('the session token is already logged out (blacklisted)');
 
     res = await api
       .get('/api/users/@me')
       .auth(accessToken, { type: 'bearer' })
       .expect(401);
 
-    expect(res.body.message).toBe('refresh token is missing');
+    expect(res.body.error).toBe('refresh token is missing');
   });
 });

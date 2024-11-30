@@ -9,7 +9,7 @@ const extractUser = async (req: Request, res: Response, next: NextFunction): Pro
     if (!req.token) {
       res.status(401).json({
         status: 401,
-        message: 'access token is missing',
+        error: 'access token is missing',
       });
       return;
     }
@@ -17,7 +17,7 @@ const extractUser = async (req: Request, res: Response, next: NextFunction): Pro
     if (!req.cookies?.jwt) {
       res.status(401).json({
         status: 401,
-        message: 'refresh token is missing',
+        error: 'refresh token is missing',
       });
       return;
     }
@@ -37,7 +37,7 @@ const extractUser = async (req: Request, res: Response, next: NextFunction): Pro
     if (userId !== refreshTokenUserId) {
       res.status(401).json({
         status: 401,
-        message: 'the access token and refresh token does not belong to same user',
+        error: 'the access token and refresh token does not belong to same user',
       });
     }
 
@@ -45,7 +45,7 @@ const extractUser = async (req: Request, res: Response, next: NextFunction): Pro
     if (tokenIsBlacklisted) {
       res.status(401).json({
         status: 401,
-        message: 'the session token is already logged out (blacklisted)',
+        error: 'the session token is already logged out (blacklisted)',
       });
       return;
     }
@@ -60,19 +60,13 @@ const extractUser = async (req: Request, res: Response, next: NextFunction): Pro
     if (rows.length < 1) {
       res.status(401).json({
         status: 401,
-        message: 'user not found or deleted',
+        error: 'user not found or deleted',
       });
       return;
     }
 
     const user = rows[0];
     req.user = user;
-
-    res.cookie('lastLoggedUser', req.user.id, {
-      httpOnly: true,
-      sameSite: 'none',
-      secure: true,
-    });
 
     next();
   } catch (error: unknown) {

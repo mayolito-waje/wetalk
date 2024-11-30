@@ -11,6 +11,6 @@ describe('extracting access token', () => {
       .get('/api/users/@me')
       .expect(401);
 
-    expect(res.body.message).toBe('access token is missing');
+    expect(res.body.error).toBe('access token is missing');
   });
 });

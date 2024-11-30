@@ -9,7 +9,7 @@ export interface UserLogin {
 
 const useAuth = () => {
   const { dispatch: notificationDispatch } = useAlertNotification();
-  const { setAccessToken } = useAccessToken();
+  const { accessToken, setAccessToken } = useAccessToken();
 
   const login = async (credentials: UserLogin) => {
     try {
@@ -21,12 +21,29 @@ const useAuth = () => {
 
       return true;
     } catch(error: unknown) {
-      console.error(error as Error);
       if (error instanceof AxiosError) {
         notificationDispatch({ type: 'error', message: error.response?.data.error });
       }
 
       return false;
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await refreshAccessToken();
+
+      const res = await axios.post('/api/auth/logout', {
+        headers: {
+          Authorization: 'Bearer ' + accessToken,
+        },
+      });
+
+      notificationDispatch({ type: 'success', message: res.data.message });
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        notificationDispatch({ type: 'error', message: error.response?.data.error });
+      }
     }
   };
 
@@ -40,7 +57,6 @@ const useAuth = () => {
 
       return true;
     } catch(error: unknown) {
-      console.error(error as Error);
       if (error instanceof AxiosError) {
         notificationDispatch({ type: 'error', message: error.response?.data.error });
       }
@@ -49,7 +65,7 @@ const useAuth = () => {
     }
   };
 
-  return { login, refreshAccessToken };
+  return { login, logout, refreshAccessToken };
 };
 
 export default useAuth;

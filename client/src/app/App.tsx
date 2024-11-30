@@ -16,9 +16,8 @@ const App = () => {
   const [renderPage, setRenderPage] = useState(false);
 
   useEffect(() => {
-    console.log("test 2");
     (async () => {
-      if (accessToken === null) {
+      if (accessToken === null && !renderPage) {
         const refreshSuccessful = await refreshAccessToken();
           
         if (refreshSuccessful) {
