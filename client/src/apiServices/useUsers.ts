@@ -10,7 +10,7 @@ const useUsers = () => {
     try {
       const res = await axios.get('/api/users/@me', {
         headers: {
-          Authorization: 'Bearer ' + accessToken,
+          Authorization: 'bearer ' + accessToken,
         },
       });
 

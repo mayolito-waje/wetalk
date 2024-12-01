@@ -31,12 +31,10 @@ const useAuth = () => {
 
   const logout = async () => {
     try {
-      await refreshAccessToken();
-
-      const res = await axios.post('/api/auth/logout', {
-        headers: {
-          Authorization: 'Bearer ' + accessToken,
-        },
+      const res = await axios({
+        url: '/api/auth/logout',
+        method: 'post',
+        headers: { Authorization: 'Bearer ' + accessToken },
       });
 
       notificationDispatch({ type: 'success', message: res.data.message });
