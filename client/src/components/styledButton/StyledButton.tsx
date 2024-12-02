@@ -6,11 +6,13 @@ interface StyledButtonProps {
   fontSize?: number;
   backgroundColor?: string;
   spinner?: boolean;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
 };
 
 const StyledButton = (props: StyledButtonProps) => {
   return (
     <button
+      onClick={props.onClick}
       style={{
         fontSize: props.fontSize ? props.fontSize + 'rem' : '1rem',
         backgroundColor: props.backgroundColor ? props.backgroundColor : 'var(--accent-color)',

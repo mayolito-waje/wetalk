@@ -24,9 +24,9 @@ const App = () => {
           notificationDispatch({ type: 'success', message: 'Logged in' });
           navigate('/chat');
         }
-
-        setRenderPage(true);
       }
+
+      setRenderPage(true);
     })();
   });
 

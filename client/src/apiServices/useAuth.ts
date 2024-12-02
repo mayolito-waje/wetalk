@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios';
+import { redirect } from 'react-router-dom';
 import useAccessToken from '../contextProviders/accessTokenProvider/useAccessToken';
 import useAlertNotification from '../contextProviders/alertNotificationProvider/useAlertNotification';
 
@@ -7,17 +8,30 @@ export interface UserLogin {
   password: string;
 };
 
+export interface UserRegister {
+  email: string;
+  username: string;
+  password: string;
+  profilePicture?: string;
+}
+
 const useAuth = () => {
   const { dispatch: notificationDispatch } = useAlertNotification();
   const { accessToken, setAccessToken } = useAccessToken();
 
   const login = async (credentials: UserLogin) => {
     try {
-      const res = await axios.post('/api/auth/login', credentials);
-      const loggedUser = res.data;
+      const res = await axios({
+        url: '/api/auth/login',
+        method: 'post',
+        data: credentials,
+      });
 
-      const { accessToken } = loggedUser;
+      const loggedUser = res.data;
+      const { accessToken, message } = loggedUser;
+
       setAccessToken(accessToken as string);
+      notificationDispatch({ type: 'success', message });
 
       return true;
     } catch(error: unknown) {
@@ -45,6 +59,30 @@ const useAuth = () => {
     }
   };
 
+  const register = async (credentials: UserRegister) => {
+    try {
+      const res = await axios({
+        url: '/api/auth/register',
+        method: 'post',
+        data: credentials,
+      });
+
+      const registeredUser = res.data;
+      const { accessToken, message } = registeredUser;
+
+      setAccessToken(accessToken as string);
+      notificationDispatch({ type: 'success', message });
+
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        notificationDispatch({ type: 'error', message: error.response?.data.error });
+      }
+
+      return false;
+    }
+  };
+
   const refreshAccessToken = async () => {
     try {
       const res = await axios.get('/api/refresh');
@@ -56,14 +94,20 @@ const useAuth = () => {
       return true;
     } catch(error: unknown) {
       if (error instanceof AxiosError) {
-        notificationDispatch({ type: 'error', message: error.response?.data.error });
+        const errorName = error.response?.data.errorName;
+
+        if (errorName === 'TokenExpiredError') {
+          notificationDispatch({ type: 'error', message: 'Token expired. please re-login.' });
+        }
       }
+
+      redirect('/');
 
       return false;
     }
   };
 
-  return { login, logout, refreshAccessToken };
+  return { login, logout, register, refreshAccessToken };
 };
 
 export default useAuth;
